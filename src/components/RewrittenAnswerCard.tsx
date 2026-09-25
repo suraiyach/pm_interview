@@ -1,19 +1,14 @@
 import React, { useState } from 'react';
-import { Sparkles, Copy, Check, Volume2, VolumeX, Eye, ArrowRightLeft, Award } from 'lucide-react';
+import { Sparkles, Copy, Check, Volume2, VolumeX, ArrowRightLeft } from 'lucide-react';
 import { speechManager } from '../services/speechService';
 
 interface RewrittenAnswerCardProps {
-  rewritten: {
-    text: string;
-    keyImprovements: string[];
-    frameworkUsed: string;
-  };
+  rewritten: { text: string; keyImprovements: string[]; frameworkUsed: string };
   candidateCombinedAnswer: string;
 }
 
 export const RewrittenAnswerCard: React.FC<RewrittenAnswerCardProps> = ({
-  rewritten,
-  candidateCombinedAnswer
+  rewritten, candidateCombinedAnswer
 }) => {
   const [copied, setCopied] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
@@ -31,90 +26,80 @@ export const RewrittenAnswerCard: React.FC<RewrittenAnswerCardProps> = ({
       setIsSpeaking(false);
     } else {
       setIsSpeaking(true);
-      speechManager.speak(rewritten.text, () => {
-        setIsSpeaking(false);
-      });
+      speechManager.speak(rewritten.text, () => setIsSpeaking(false));
     }
   };
 
   return (
-    <div className="bg-gradient-to-b from-slate-900 via-slate-900 to-indigo-950/20 border border-indigo-500/30 rounded-2xl p-6 shadow-xl space-y-6">
+    <div className="card p-6 sm:p-8 space-y-6 border-2 border-pink-200 shadow-pink-md">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-4">
-        <div>
-          <div className="flex items-center space-x-2">
-            <div className="w-7 h-7 rounded-lg bg-indigo-500/20 text-indigo-400 flex items-center justify-center">
-              <Sparkles className="w-4 h-4" />
-            </div>
-            <h3 className="text-lg font-bold text-white tracking-tight">
-              Exemplary Staff PM Rewrite
-            </h3>
-            <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-              5/5 Benchmark
-            </span>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3
+                      border-b border-pink-100 pb-5">
+        <div className="flex items-center gap-3">
+          <div className="w-9 h-9 rounded-2xl bg-gradient-to-br from-pink-400 to-blush-500
+                          flex items-center justify-center shadow-pink-md">
+            <Sparkles className="w-5 h-5 text-white" />
           </div>
-          <p className="text-xs text-slate-400 mt-1">
-            How a Staff / Lead PM elevates your core ideas into an airtight, defensible executive response.
-          </p>
+          <div>
+            <div className="flex items-center gap-2">
+              <h3 className="text-base font-black text-pink-900">Staff PM Rewrite ✨</h3>
+              <span className="badge bg-emerald-50 text-emerald-600 border border-emerald-200 text-[10px] font-black">
+                5/5 Benchmark
+              </span>
+            </div>
+            <p className="text-xs text-pink-400 font-medium">
+              How a Staff / Lead PM elevates your idea into an airtight executive response 💪
+            </p>
+          </div>
         </div>
 
-        {/* Action Controls */}
-        <div className="flex items-center space-x-2 self-start sm:self-auto">
-          {/* Comparison View Toggle */}
-          <button
-            onClick={() => setViewMode(viewMode === 'rewrite' ? 'compare' : 'rewrite')}
-            className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${
+        <div className="flex items-center gap-2 self-start sm:self-auto">
+          <button onClick={() => setViewMode(v => v === 'rewrite' ? 'compare' : 'rewrite')}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold border transition-all ${
               viewMode === 'compare'
-                ? 'bg-indigo-600 text-white border-indigo-500'
-                : 'bg-slate-800 text-slate-300 border-slate-700 hover:text-white'
-            }`}
-          >
+                ? 'bg-pink-100 text-pink-600 border-pink-300'
+                : 'bg-white text-pink-500 border-pink-200 hover:bg-pink-50'
+            }`}>
             <ArrowRightLeft className="w-3.5 h-3.5" />
-            <span>{viewMode === 'compare' ? 'Viewing Side-by-Side' : 'Compare with Mine'}</span>
+            <span>{viewMode === 'compare' ? 'Side-by-Side' : 'Compare'}</span>
           </button>
 
-          {/* Listen aloud */}
-          <button
-            onClick={handleToggleSpeak}
-            className={`p-2 rounded-lg border text-xs transition-colors ${
+          <button onClick={handleToggleSpeak}
+            className={`p-2 rounded-xl border text-xs transition-all ${
               isSpeaking
-                ? 'bg-indigo-500/20 text-indigo-300 border-indigo-500/40 animate-pulse'
-                : 'bg-slate-800 text-slate-400 hover:text-white border-slate-700'
-            }`}
-            title={isSpeaking ? 'Stop audio' : 'Listen to how this sounds aloud'}
-          >
+                ? 'bg-pink-100 text-pink-500 border-pink-300 animate-pulse-pink'
+                : 'bg-white text-pink-400 border-pink-200 hover:bg-pink-50'
+            }`} title="Listen aloud">
             {isSpeaking ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
           </button>
 
-          {/* Copy */}
-          <button
-            onClick={handleCopy}
-            className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 border border-slate-700 hover:text-white text-xs font-medium transition-colors"
-          >
-            {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
-            <span>{copied ? 'Copied!' : 'Copy'}</span>
+          <button onClick={handleCopy}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white text-pink-500
+                       border border-pink-200 hover:bg-pink-50 text-xs font-bold transition-all">
+            {copied ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
+            <span>{copied ? 'Copied! 💕' : 'Copy'}</span>
           </button>
         </div>
       </div>
 
-      {/* Framework Badge & Key Enhancements */}
-      <div className="bg-slate-850/80 border border-slate-750 rounded-xl p-4 space-y-3">
-        <div className="flex items-center space-x-2">
-          <Award className="w-4 h-4 text-indigo-400" />
-          <span className="text-xs font-semibold text-slate-200">Framework Applied:</span>
-          <span className="text-xs font-mono text-indigo-300 bg-indigo-950/60 px-2 py-0.5 rounded border border-indigo-800/40">
+      {/* Framework + Why 5/5 */}
+      <div className="bg-pink-50/70 border border-pink-100 rounded-2xl p-4 space-y-3">
+        <div className="flex items-center gap-2 flex-wrap">
+          <span className="text-xs font-black text-pink-700">🏗️ Framework Applied:</span>
+          <span className="text-xs font-mono text-blush-600 bg-pink-100 px-2.5 py-0.5 rounded-lg
+                           border border-pink-200 font-bold">
             {rewritten.frameworkUsed}
           </span>
         </div>
 
         <div>
-          <div className="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-2">
-            Why This Version Scores 5/5 on Every Rubric:
+          <div className="text-[11px] font-black uppercase tracking-widest text-pink-400 mb-2">
+            Why this version scores 5/5 on every dimension:
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
             {rewritten.keyImprovements.map((imp, idx) => (
-              <div key={idx} className="flex items-start space-x-2 text-xs text-slate-300">
-                <span className="text-emerald-400 font-bold shrink-0 mt-0.5">✓</span>
+              <div key={idx} className="flex items-start gap-2 text-xs text-pink-700 font-medium">
+                <span className="text-emerald-500 font-black shrink-0 mt-0.5">✓</span>
                 <span>{imp}</span>
               </div>
             ))}
@@ -122,37 +107,42 @@ export const RewrittenAnswerCard: React.FC<RewrittenAnswerCardProps> = ({
         </div>
       </div>
 
-      {/* Content Display (Single or Side-by-Side Compare) */}
+      {/* Content: single or compare */}
       {viewMode === 'compare' ? (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          {/* Candidate Version */}
-          <div className="bg-slate-950 border border-slate-800 rounded-xl p-4 flex flex-col">
-            <div className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2 flex items-center justify-between border-b border-slate-800 pb-2">
-              <span>Your Combined Submission</span>
-              <span className="text-[10px] text-slate-500 font-normal">Original + Follow-up</span>
+          {/* Candidate's version */}
+          <div className="bg-pink-50/40 border border-pink-100 rounded-2xl p-4 flex flex-col">
+            <div className="text-[10px] font-black uppercase tracking-widest text-pink-400 mb-2 pb-2
+                            border-b border-pink-100 flex justify-between">
+              <span>Your Submission</span>
+              <span className="text-pink-300 font-medium normal-case">Original + Follow-up</span>
             </div>
-            <div className="text-xs text-slate-300 whitespace-pre-wrap font-sans leading-relaxed flex-1 overflow-y-auto max-h-[420px] pr-2">
+            <div className="text-xs text-pink-700 whitespace-pre-wrap font-sans leading-relaxed
+                            flex-1 overflow-y-auto max-h-[380px] pr-1 font-medium">
               {candidateCombinedAnswer}
             </div>
           </div>
 
-          {/* Rewritten Staff PM Version */}
-          <div className="bg-slate-950 border border-indigo-500/40 rounded-xl p-4 flex flex-col relative ring-1 ring-indigo-500/20">
-            <div className="text-xs font-bold uppercase tracking-wider text-indigo-300 mb-2 flex items-center justify-between border-b border-indigo-950/60 pb-2">
-              <span className="flex items-center space-x-1.5">
-                <Sparkles className="w-3.5 h-3.5 text-indigo-400" />
-                <span>Staff PM Elevated Version</span>
+          {/* Staff PM version */}
+          <div className="bg-gradient-to-b from-white to-pink-50/60 border-2 border-pink-300
+                          rounded-2xl p-4 flex flex-col shadow-pink-md">
+            <div className="text-[10px] font-black uppercase tracking-widest text-pink-500 mb-2 pb-2
+                            border-b border-pink-100 flex justify-between">
+              <span className="flex items-center gap-1.5">
+                <Sparkles className="w-3 h-3 text-pink-400" /> Staff PM Version
               </span>
-              <span className="text-[10px] text-emerald-400 font-normal">Air-Tight & Quantified</span>
+              <span className="text-emerald-500 font-bold normal-case">Air-tight & Quantified</span>
             </div>
-            <div className="text-xs text-slate-200 whitespace-pre-wrap font-sans leading-relaxed flex-1 overflow-y-auto max-h-[420px] pr-2 prose prose-invert prose-xs">
+            <div className="text-xs text-pink-800 whitespace-pre-wrap font-sans leading-relaxed
+                            flex-1 overflow-y-auto max-h-[380px] pr-1 font-medium">
               {rewritten.text}
             </div>
           </div>
         </div>
       ) : (
-        <div className="bg-slate-950 border border-indigo-500/30 rounded-xl p-5 relative ring-1 ring-indigo-500/10">
-          <div className="text-xs text-slate-200 whitespace-pre-wrap font-sans leading-relaxed space-y-3">
+        <div className="bg-gradient-to-b from-white to-pink-50/50 border-2 border-pink-200
+                        rounded-2xl p-5 shadow-pink-sm">
+          <div className="text-xs text-pink-800 whitespace-pre-wrap font-sans leading-relaxed font-medium">
             {rewritten.text}
           </div>
         </div>

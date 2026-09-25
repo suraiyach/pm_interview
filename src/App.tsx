@@ -202,7 +202,7 @@ export const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans selection:bg-indigo-500 selection:text-white">
+    <div className="min-h-screen bg-pink-50 text-pink-950 flex flex-col font-sans selection:bg-pink-400 selection:text-white">
       <Header
         key={supabaseVersion}
         targetLevel={targetLevel}
@@ -255,9 +255,10 @@ export const App: React.FC = () => {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-slate-850 py-6 text-center text-xs text-slate-500">
-        <p>Interview Coach — Objective PM Evaluation Bar • Powered by Supabase & React</p>
+      <footer className="border-t border-pink-100 py-6 text-center text-xs text-pink-400 font-medium bg-white/50">
+        <p>✨ Interview Coach — PM Evaluation Engine • Built with 💕 using React, Supabase & AI</p>
       </footer>
+
 
       {/* Settings Modal (Supabase & Gemini AI) */}
       <SettingsModal

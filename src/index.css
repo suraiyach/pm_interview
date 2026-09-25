@@ -4,22 +4,98 @@
 
 @layer base {
   body {
-    @apply bg-slate-950 text-slate-100 font-sans;
+    @apply bg-pink-50 text-pink-950 font-sans;
+    background-image: radial-gradient(ellipse at top left, #fff0f6 0%, transparent 50%),
+                      radial-gradient(ellipse at bottom right, #f3e8ff 0%, transparent 50%);
+    background-attachment: fixed;
   }
 }
 
-/* Custom scrollbars */
+@layer components {
+  .card {
+    @apply bg-white/80 backdrop-blur-sm border border-pink-100 rounded-3xl shadow-soft;
+  }
+  .card-hover {
+    @apply hover:shadow-pink-md hover:border-pink-200 transition-all duration-300;
+  }
+  .btn-primary {
+    @apply bg-gradient-to-r from-pink-500 to-blush-500 hover:from-pink-400 hover:to-blush-400
+           text-white font-bold rounded-2xl shadow-pink-md hover:shadow-pink-lg
+           transition-all duration-300 hover:scale-[1.02] active:scale-[0.98];
+  }
+  .btn-secondary {
+    @apply bg-white border border-pink-200 text-pink-700 hover:bg-pink-50 hover:border-pink-300
+           font-semibold rounded-2xl transition-all duration-200;
+  }
+  .input-field {
+    @apply w-full bg-white/70 border border-pink-200 rounded-2xl px-4 py-3 text-pink-900
+           placeholder-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-400 focus:border-transparent
+           transition-all duration-200 font-sans;
+  }
+  .badge {
+    @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold;
+  }
+  .score-bar {
+    @apply h-2.5 rounded-full transition-all duration-700 ease-out;
+  }
+}
+
+/* Custom scrollbar — pink! */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #0f172a;
+  background: #fff0f6;
+  border-radius: 99px;
 }
 ::-webkit-scrollbar-thumb {
-  background: #334155;
-  border-radius: 9999px;
+  background: #f9a8d4;
+  border-radius: 99px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #475569;
+  background: #f472b6;
+}
+
+/* Floating blobs — decorative background */
+.blob {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.25;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Glassmorphism panels */
+.glass {
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(249, 168, 212, 0.35);
+}
+
+/* Pink shimmer skeleton loader */
+.shimmer {
+  background: linear-gradient(90deg, #fce7f3 25%, #f9a8d4 50%, #fce7f3 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+}
+
+/* Cute emoji bounce */
+.emoji-bounce {
+  display: inline-block;
+  animation: bounce-soft 1.4s ease-in-out infinite;
+}
+
+/* Textarea auto-grow */
+textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+/* Cute focus ring */
+*:focus-visible {
+  outline: 2px solid #f472b6;
+  outline-offset: 2px;
 }
